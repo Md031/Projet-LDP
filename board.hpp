@@ -1,8 +1,12 @@
+
+#include "wall.hpp"
+#include "cell.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
 
-#include "cells.hpp"
+#ifndef BOARD_HPP
+#define BOARD_HPP
 
 using namespace std;
 
@@ -11,7 +15,7 @@ class Board
 {
 private:
 	const string levelFile;
-	vector<vector<Cells*>> boardMatrix = {};
+	vector<vector<Cell*>> boardMatrix = {};
 	int playerPosX, playerPosY;
 public:
 	Board(const string levelFile);
@@ -24,3 +28,6 @@ public:
 	void createMatrix();
 	string getLvlFile();
 };
+
+
+#endif

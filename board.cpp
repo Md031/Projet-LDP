@@ -18,9 +18,9 @@ void Board::createMatrix()
 	fstream readFile;
 	string fileContent;
 	readFile.open(levelFile, ios::in);
-	vector<Cells*> tempContent;
+	vector<Cell*> tempContent;
 	int line = 0;
-	Cells* cases;
+	Cell* cases;
 	while (getline(readFile, fileContent))  // on récupère le design du niveau
 	{
 		tempContent = {};
@@ -28,15 +28,15 @@ void Board::createMatrix()
 		{
 			if (fileContent[cut] == '0')
 			{
-				cases = new Cells{Point{cut*50+250, line*50+250}, FL_BLACK, FL_BLACK};
+				cases = new Wall({cut*50+150, line*50+150});
 			}
 			else if (fileContent[cut] == '1')
 			{
-				cases = new Cells{Point{cut*50+250, line*50+250}, FL_BLACK, FL_BLUE};
+				cases = new Cell({cut*50+150, line*50+150});
 			}
 			else if (fileContent[cut] == '2')
 			{
-				cases = new Cells{Point{cut*50+250, line*50+250}, FL_BLACK, FL_RED};
+				cases = new Cell({cut*50+150, line*50+150});
 				playerPosX = line;
 				playerPosY = cut;
 			}
@@ -53,7 +53,7 @@ void Board::draw()
 	{
     	for (auto &c: v)
     	{
-			c->draw();
+ 			c->draw();
 		}
 	}
 }
@@ -71,7 +71,7 @@ Board::~Board()
 
 void Board::keyPressed(int key)
 {	
-	Cells* caseTemp;
+	Cell* caseTemp;
 	switch (key)
 	{
 	case FL_Left:
@@ -101,5 +101,4 @@ void Board::keyPressed(int key)
 	case 'q':
 		exit(0);
     }
-    cout << playerPosX  << " " << playerPosY << endl;
 }
