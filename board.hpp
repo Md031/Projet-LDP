@@ -1,6 +1,7 @@
 
 #include "wall.hpp"
 #include "cell.hpp"
+#include "player.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -17,12 +18,13 @@ private:
 	const string levelFile;
 	vector<vector<Cell*>> boardMatrix = {};
 	int playerPosX, playerPosY;
+	Player* player;
 public:
 	Board(const string levelFile);
 	~Board();
+	void keyPressed(int key);
 
 	void init();
-	void keyPressed(int key);
 	void draw();
 
 	void createMatrix();

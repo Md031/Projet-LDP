@@ -19,31 +19,34 @@ void Board::createMatrix()
 	string fileContent;
 	readFile.open(levelFile, ios::in);
 	vector<Cell*> tempContent;
-	int line = 0;
+	int row = 0;
 	Cell* cases;
 	while (getline(readFile, fileContent))  // on récupère le design du niveau
 	{
 		tempContent = {};
-		for (int cut = 0; cut < (int)fileContent.length(); cut++)
+		for (int column = 0; column < (int)fileContent.length(); column++)
 		{
-			if (fileContent[cut] == '0')
+			if (fileContent[column] == '0')  // murs infranchissable 
 			{
-				cases = new Wall({cut*50+150, line*50+150});
+				cases = new Wall({column*50+150, row*50+150});
 			}
-			else if (fileContent[cut] == '1')
+			else if (fileContent[column] == '1')  // murs vide pour se déplacer
 			{
-				cases = new Cell({cut*50+150, line*50+150});
+				cases = new Cell({column*50+150, row*50+150});
 			}
-			else if (fileContent[cut] == '2')
+			else if (fileContent[column] == '2')  // joueur
 			{
-				cases = new Cell({cut*50+150, line*50+150});
-				playerPosX = line;
-				playerPosY = cut;
+				cases = new Cell({column*50+150, row*50+150});
+				player = new Player({column, row});
 			}
+			//else if (fileContent[column] == '3')  // boites qu'on peut bouger
+			//{
+			//	cases = new Cell({column*50+150, row*50+150});
+			//}
 			tempContent.push_back(cases);
 		}
 		boardMatrix.push_back(tempContent);
-		line++;  // passer à la ligne suivante de la matrice
+		row++;  // passer à la ligne suivante de la matrice
 	}
 }
 
@@ -56,49 +59,24 @@ void Board::draw()
  			c->draw();
 		}
 	}
+	player->draw();
 }
 
 Board::~Board()
 {
+	delete player;
 	for (auto &v : boardMatrix)
 	{
 		for (auto &c : v)
 		{
+			cout << "problème" << endl;
 			delete c;
 		}
 	}
+	cout << "plus de problème" << endl;
 }
 
 void Board::keyPressed(int key)
-{	
-	Cell* caseTemp;
-	switch (key)
-	{
-	case FL_Left:
-		caseTemp = boardMatrix[playerPosX].at(playerPosY-1); 
-		boardMatrix[playerPosX].at(playerPosY-1) = boardMatrix[playerPosX].at(playerPosY);
-		boardMatrix[playerPosX].at(playerPosY) = caseTemp;
-		playerPosY -= 1;
-		break;
-	case FL_Right:
-		caseTemp = boardMatrix[playerPosX].at(playerPosY+1); 
-		boardMatrix[playerPosX].at(playerPosY+1) = boardMatrix[playerPosX].at(playerPosY);
-		boardMatrix[playerPosX].at(playerPosY) = caseTemp;
-		playerPosY += 1;		
-		break;
-	case FL_Up:
-		caseTemp = boardMatrix[playerPosX-1].at(playerPosY); 
-		boardMatrix[playerPosX-1].at(playerPosY) = boardMatrix[playerPosX].at(playerPosY);
-		boardMatrix[playerPosX].at(playerPosY) = caseTemp;
-		playerPosX -= 1;
-		break;
-	case FL_Down:
-		caseTemp = boardMatrix[playerPosX+1].at(playerPosY); 
-		boardMatrix[playerPosX+1].at(playerPosY) = boardMatrix[playerPosX].at(playerPosY);
-		boardMatrix[playerPosX].at(playerPosY) = caseTemp;
-		playerPosX += 1;
-		break;
-	case 'q':
-		exit(0);
-    }
+{
+	player->keyPressed(Fl::event_key());
 }

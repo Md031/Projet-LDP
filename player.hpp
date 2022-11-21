@@ -1,0 +1,22 @@
+#include "cell.hpp"
+
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
+class Player
+{
+private:
+	Point currentPos;
+public:
+	Player(Point currentPos);
+	Player();
+	~Player();
+	void keyPressed(int key);
+	void draw();
+	int getPosX();
+	int getPosY();
+	void setX(int newX);
+	void setY(int newY);
+};
+
+#endif
