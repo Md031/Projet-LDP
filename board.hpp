@@ -1,7 +1,10 @@
 
 #include "wall.hpp"
 #include "cell.hpp"
+#include "box.hpp"
 #include "player.hpp"
+#include "move.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -15,12 +18,14 @@ using namespace std;
 class Board
 {
 private:
-	const string levelFile;
+	string levelFile;
 	vector<vector<Cell*>> boardMatrix = {};
 	int playerPosX, playerPosY;
+	string dirDepl;
 	Player* player;
+	Move* move;
 public:
-	Board(const string levelFile);
+	Board(string levelFile);
 	~Board();
 	void keyPressed(int key);
 

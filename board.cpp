@@ -7,6 +7,7 @@ Board::Board(const string levelFile) : levelFile{levelFile} {init();}
 void Board::init()
 {
 	createMatrix();
+	move = new Move(boardMatrix);
 }
 
 
@@ -28,22 +29,25 @@ void Board::createMatrix()
 		{
 			if (fileContent[column] == '0')  // murs infranchissable 
 			{
-				cases = new Wall({column*50+150, row*50+150});
+				cases = new Wall({column*60+100, row*60+100});
+				tempContent.push_back(cases);
 			}
 			else if (fileContent[column] == '1')  // murs vide pour se déplacer
 			{
-				cases = new Cell({column*50+150, row*50+150});
+				cases = new Cell({column*60+100, row*60+100});
+				tempContent.push_back(cases);
 			}
 			else if (fileContent[column] == '2')  // joueur
 			{
-				cases = new Cell({column*50+150, row*50+150});
+				cases = new Cell({column*60+100, row*60+100});
 				player = new Player({column, row});
+				tempContent.push_back(cases);
 			}
-			//else if (fileContent[column] == '3')  // boites qu'on peut bouger
-			//{
-			//	cases = new Cell({column*50+150, row*50+150});
-			//}
-			tempContent.push_back(cases);
+			else if (fileContent[column] == '3')  // boites qu'on peut bouger
+			{
+				cases = new Box({column*60+100, row*60+100});
+				tempContent.push_back(cases);
+			}
 		}
 		boardMatrix.push_back(tempContent);
 		row++;  // passer à la ligne suivante de la matrice
@@ -65,18 +69,23 @@ void Board::draw()
 Board::~Board()
 {
 	delete player;
+	delete move;
 	for (auto &v : boardMatrix)
 	{
 		for (auto &c : v)
 		{
-			cout << "problème" << endl;
 			delete c;
 		}
 	}
-	cout << "plus de problème" << endl;
 }
+
 
 void Board::keyPressed(int key)
 {
-	player->keyPressed(Fl::event_key());
+	move->setCurrentPos({player->getPosY(), player->getPosX()});
+	move->setKeyDepl(key);
+	if (move->checkMove())
+	{
+		player->keyPressed(key);
+	}
 }

@@ -1,7 +1,5 @@
 
 #include "player.hpp"
-#include <array>
-#include <math.h>
 
 
 Player::Player(Point currentPos) : currentPos{Point(currentPos)} {}
@@ -9,11 +7,6 @@ Player::Player(Point currentPos) : currentPos{Point(currentPos)} {}
 
 Player::Player() {}
 
-
-Player::~Player()
-{
-	delete this;
-}
 
 int Player::getPosX() 
 {
@@ -62,7 +55,7 @@ void Player::keyPressed(int key)
 
 void Player::draw()
 {
-	Point posDessin{currentPos.x*50+163, currentPos.y*50+163};
-	fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 25, 25, FL_GREEN);
-  	fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 25, 25, FL_BLACK);
+	Point posDessin{currentPos.x*60+115, currentPos.y*60+115};
+	fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, FL_GREEN);
+  	fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 30, 30, FL_BLACK);
 }

@@ -17,13 +17,16 @@ protected:
 	Fl_Color cellColor;
 	Fl_Color frameColor;
 	bool canBeMoved;
+	bool canMoveInside;
 public:
-	Cell(Point pos, Fl_Color cellColor = FL_RED, Fl_Color frameColor = FL_BLACK, bool canBeMoved = false);
+	Cell(Point pos, Fl_Color cellColor = FL_RED, Fl_Color frameColor = FL_BLACK, bool canBeMoved = false, bool canMoveInside = true);
 	Cell();
-	virtual ~Cell();
+	virtual ~Cell() = default;
 	virtual void draw();
 	virtual int getPosX() const;
 	virtual int getPosY() const;
+	virtual bool getMoveInside() const;
+	virtual bool getCanBeMoved() const;
 };
 
 #endif

@@ -10,7 +10,7 @@ private:
 public:
 	Player(Point currentPos);
 	Player();
-	~Player();
+	~Player() = default;
 	void keyPressed(int key);
 	void draw();
 	int getPosX();
