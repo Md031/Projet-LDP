@@ -15,6 +15,8 @@
 
 using namespace std;
 
+class Move;
+
 class Board
 {
 private:
@@ -34,6 +36,9 @@ public:
 
 	void createMatrix();
 	string getLvlFile();
+
+	Cell* getCell(const Point& pos) const { return boardMatrix[pos.x][pos.y]; }
+	Point getSize() const { return Point{(int)boardMatrix.size(), (int)boardMatrix[0].size()}; }
 };
 
 

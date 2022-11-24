@@ -7,7 +7,7 @@ Board::Board(const string levelFile) : levelFile{levelFile} {init();}
 void Board::init()
 {
 	createMatrix();
-	move = new Move(&boardMatrix);
+	move = new Move(this);
 }
 
 

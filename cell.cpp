@@ -12,6 +12,29 @@ void Cell::draw()
 {
 	fl_draw_box(FL_FLAT_BOX, pos.x, pos.y, 60, 60, cellColor);
   	fl_draw_box(FL_BORDER_FRAME, pos.x, pos.y, 60, 60, frameColor);
+	//{
+	// 	array<Point, 5> points
+	// 	{
+	// 		Point{pos.x - w / 2, pos.y - h / 2},
+	// 		Point{pos.x - w / 2, pos.y + h / 2},
+	// 		Point{pos.x + w / 2, pos.y + h / 2},
+	// 		Point{pos.x + w / 2, pos.y - h / 2},
+	// 		Point{pos.x - w / 2, pos.y - h / 2}
+	// 	};
+	// 	fl_color(cellColor);
+	// 	fl_begin_polygon();
+	// 	for (auto &point : points) 
+	// 	{
+	// 		fl_vertex(point.x, point.y);
+	// 	}
+	// 	fl_end_polygon();
+	// 	fl_color(frameColor);
+	// 	fl_begin_line();
+	// 	for (auto &point : points) 
+	// 	{
+	// 		fl_vertex(point.x, point.y);
+	// 	}
+	// 	fl_end_line();
 }
 
 
@@ -41,5 +64,14 @@ bool Cell::getCanBeMoved() const
 
 Cell &Cell::operator=(const Cell &other)
 {
-	moussa est trop bg, zaid est 'dele'gay
+	if (this != &other) 
+	{
+		pos = other.pos;
+		cellColor = other.cellColor;
+		frameColor = other.frameColor;
+	}
+	return *this;
 }
+
+
+void Cell::setPos(const Point &newPos) { pos = newPos; }

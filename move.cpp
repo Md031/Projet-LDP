@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-Move::Move(vector<vector<Cell*>> *board) : board{board} {}
+Move::Move(Board *board) : board{board} {}
 
 
 //Move::Move() {}
@@ -13,9 +13,8 @@ bool Move::checkMove()  // faire tous les if
 {
 	convertMove();
 	int test = 1;
-	cout << (*board)[wishedDepl.x][wishedDepl.y]->getPosX() << endl;
 	if (!isInBoard(test)) return false;
-	if (!((*board)[wishedDepl.x][wishedDepl.y]->getMoveInside())) return false;
+	if (!(board->getCell(wishedDepl)->getMoveInside())) return false;
 	return true;
 }
 
@@ -25,29 +24,34 @@ bool Move::isInBoard(int test)
 	// si il est inférieur à 0 ou supérieur à la taille du vecteur on n'autorise pas le déplacement
 	if (wishedDepl.x < 0) return false;
 	if (wishedDepl.y < 0) return false;
-	if (wishedDepl.x >= (int)(*board).size()) return false;
-	if (wishedDepl.y >= (int)(*board)[0].size()) return false;
+	if (wishedDepl.x >= board->getSize().x) return false;
+	if (wishedDepl.y >= board->getSize().y) return false;
 	if (test == 1)  // pour éviter les appels reccursif avec l'appel de canItMove()
 	{
 		if (!canItMove()) return false;	
-	}
+		cout << "fin erreur" << endl;
+ 	}
 	return true;
 }
 
 
 bool Move::canItMove()  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
 {
-	if ((*board)[wishedDepl.x][wishedDepl.y]->getCanBeMoved())  // si elle peut pas être bougé vérifier que derrière elle s'est possible aussi
+	cout << "ici" << endl;
+	cout << wishedDepl.x << " " << wishedDepl.y << endl;
+	if (board->getCell(wishedDepl)->getCanBeMoved())  // si elle peut pas être bougé vérifier que derrière elle s'est possible aussi
 	{
 		wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
 		wishedDepl.y += senseMovement.y;
-		if (isInBoard(2) && (*board)[wishedDepl.x][wishedDepl.y]->getMoveInside())
+		cout << "ici" << endl;
+		if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
 		{
-			Cell* cellTemp = (*board)[wishedDepl.x][wishedDepl.y];  // case où la box va atterir
-			(*board)[wishedDepl.x].at(wishedDepl.y) = (*board)[wishedDepl.x - senseMovement.x].at(wishedDepl.y - senseMovement.y);
+			cout << "changement des coordonnées" << endl;
+			board->getCell(wishedDepl)->setPos({wishedDepl.x*60+100, wishedDepl.y*60+100});
 			wishedDepl.x -= senseMovement.x; 						// reset du mouvement
 			wishedDepl.y -= senseMovement.y;
-			(*board)[wishedDepl.x][wishedDepl.y] = cellTemp;   		// nouvelle pos de la box
+			board->getCell(wishedDepl)->setPos({wishedDepl.x*60+100, wishedDepl.y*60+100});
+			cout << "fin des changements des coordonnées" << endl;
 			return true;
 		}
 		return false;

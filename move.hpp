@@ -3,20 +3,22 @@
 #define MOVE_HPP
 
 #include <vector>
-#include "cell.hpp"
+#include "board.hpp"
 
 using namespace std;
+
+class Board;
 
 class Move
 {
 private:
-	vector<vector<Cell*>> *board;
+	Board *board;
 	Point currentPos;  		// position du joueur
 	Point wishedDepl;  		// position où le joueur veut aller
 	Point senseMovement; 	// direct dans laquelle il se déplace
 	int keyDepl;
 public:
-	Move(vector<vector<Cell*>> *board);
+	Move(Board *board);
 	Move();
 	~Move() = default;
 	bool checkMove();
