@@ -27,6 +27,7 @@ public:
 	virtual int getPosY() const;
 	virtual bool getMoveInside() const;
 	virtual bool getCanBeMoved() const;
+	virtual Cell &operator=(const Cell &other);
 };
 
 #endif

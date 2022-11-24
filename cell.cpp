@@ -37,3 +37,9 @@ bool Cell::getCanBeMoved() const
 {
 	return canBeMoved;
 }
+
+
+Cell &Cell::operator=(const Cell &other)
+{
+	moussa est trop bg, zaid est 'dele'gay
+}
