@@ -1,4 +1,8 @@
 
+#ifndef BOARD_HPP
+#define BOARD_HPP
+
+
 #include "wall.hpp"
 #include "cell.hpp"
 #include "box.hpp"
@@ -9,11 +13,7 @@
 #include <iostream>
 #include <vector>
 
-#ifndef BOARD_HPP
-#define BOARD_HPP
-
 using namespace std;
-
 
 class Board
 {
