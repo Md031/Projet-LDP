@@ -22,23 +22,23 @@ class Board
 private:
 	string levelFile;
 	vector<vector<Cell*>> boardMatrix = {};
-	int playerPosX, playerPosY;
 	string dirDepl;
 	Player* player;
 	Move* move;
 public:
 	Board(string levelFile);
 	~Board();
+	
 	void keyPressed(int key);
-
 	void init();
 	void draw();
 
 	void createMatrix();
+	
 	string getLvlFile();
-
-	Cell* getCell(const Point& pos) const { return boardMatrix[pos.x][pos.y]; }
-	Point getSize() const { return Point{(int)boardMatrix.size(), (int)boardMatrix[0].size()}; }
+	Cell* getCell(const Point &pos);
+	Point getSize();
+	void setCell(Point pos, Cell *newCell);
 };
 
 

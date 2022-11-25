@@ -3,6 +3,10 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
+#include <array>
+#include <iostream>
+
+using namespace std;
 
 struct Point
 {
@@ -18,14 +22,13 @@ protected:
 	Fl_Color frameColor;
 	bool canBeMoved;
 	bool canMoveInside;
-	int w, h = 60;
+	int cellSize = 60;
 public:
 	Cell(Point pos, Fl_Color cellColor = FL_RED, Fl_Color frameColor = FL_BLACK, bool canBeMoved = false, bool canMoveInside = true);
 	Cell();
 	virtual ~Cell() = default;
 	virtual void draw();
-	virtual int getPosX() const;
-	virtual int getPosY() const;
+	virtual Point getPos() const;
 	virtual void setPos(const Point &newPos);
 	virtual bool getMoveInside() const;
 	virtual bool getCanBeMoved() const;

@@ -1,5 +1,6 @@
 FLAGS=-lfltk -Wall -std=c++17
 COMPILER=g++
+EXECPATH = \executable\
 
 sokoban: sokoban.cpp board.o cell.o wall.o player.o box.o move.o
 	${COMPILER} sokoban.cpp wall.o board.o cell.o player.o box.o move.o -o sokoban ${FLAGS}

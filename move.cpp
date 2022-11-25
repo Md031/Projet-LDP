@@ -1,12 +1,13 @@
 
 #include "move.hpp"
+#include "cell.hpp"
 #include <iostream>
 using namespace std;
 
-Move::Move(Board *board) : board{board} {}
+Move::Move(Board *board, Point currentPos, int keyDepl) : board{board}, currentPos{currentPos}, keyDepl{keyDepl} {}
 
 
-//Move::Move() {}
+Move::Move() {}
 
 
 bool Move::checkMove()  // faire tous les if
@@ -29,7 +30,6 @@ bool Move::isInBoard(int test)
 	if (test == 1)  // pour éviter les appels reccursif avec l'appel de canItMove()
 	{
 		if (!canItMove()) return false;	
-		cout << "fin erreur" << endl;
  	}
 	return true;
 }
@@ -37,22 +37,26 @@ bool Move::isInBoard(int test)
 
 bool Move::canItMove()  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
 {
-	cout << "ici" << endl;
-	cout << wishedDepl.x << " " << wishedDepl.y << endl;
 	if (board->getCell(wishedDepl)->getCanBeMoved())  // si elle peut pas être bougé vérifier que derrière elle s'est possible aussi
 	{
 		wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
 		wishedDepl.y += senseMovement.y;
-		cout << "ici" << endl;
 		if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
 		{
-			cout << "changement des coordonnées" << endl;
-			board->getCell(wishedDepl)->setPos({wishedDepl.x*60+100, wishedDepl.y*60+100});
+			Cell *tempCell = board->getCell(wishedDepl);
+			Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
+			board->setCell(wishedDepl, tempBox);
+			tempBox->setPos(wishedDepl);
+			wishedDepl.x -= senseMovement.x;					// reset du mouvement
+			wishedDepl.y -= senseMovement.y;
+			board->setCell(wishedDepl, tempCell);
+			tempCell->setPos(wishedDepl);
+			return true;
+		}
+		else
+		{
 			wishedDepl.x -= senseMovement.x; 						// reset du mouvement
 			wishedDepl.y -= senseMovement.y;
-			board->getCell(wishedDepl)->setPos({wishedDepl.x*60+100, wishedDepl.y*60+100});
-			cout << "fin des changements des coordonnées" << endl;
-			return true;
 		}
 		return false;
 	}
@@ -80,18 +84,12 @@ void Move::convertMove()
 	default:
 		break;
     }
-    wishedDepl.x = currentPos.x + senseMovement.x;
-    wishedDepl.y = currentPos.y + senseMovement.y;
+    wishedDepl.x = currentPos.y + senseMovement.x;
+    wishedDepl.y = currentPos.x + senseMovement.y;
 }
 
 
-void Move::setCurrentPos(Point playerPos)
-{
-	currentPos = playerPos;
-}
-
-
-void Move::setKeyDepl(int key) 
-{
-	keyDepl = key;
-}
+//Cell Move::findCell(Point &pos)
+//{
+//	return board->boardMatrix[pos.x/60].at(pos.y/60);
+//}

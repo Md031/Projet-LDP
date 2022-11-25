@@ -10,44 +10,38 @@ Cell::Cell() {}
 
 void Cell::draw()
 {
-	fl_draw_box(FL_FLAT_BOX, pos.x, pos.y, 60, 60, cellColor);
-  	fl_draw_box(FL_BORDER_FRAME, pos.x, pos.y, 60, 60, frameColor);
+	fl_draw_box(FL_FLAT_BOX, pos.x*60, pos.y*60, 60, 60, cellColor);
+  	fl_draw_box(FL_BORDER_FRAME, pos.x*60, pos.y*60, 60, 60, frameColor);
+	//array<Point, 5> points
 	//{
-	// 	array<Point, 5> points
-	// 	{
-	// 		Point{pos.x - w / 2, pos.y - h / 2},
-	// 		Point{pos.x - w / 2, pos.y + h / 2},
-	// 		Point{pos.x + w / 2, pos.y + h / 2},
-	// 		Point{pos.x + w / 2, pos.y - h / 2},
-	// 		Point{pos.x - w / 2, pos.y - h / 2}
-	// 	};
-	// 	fl_color(cellColor);
-	// 	fl_begin_polygon();
-	// 	for (auto &point : points) 
-	// 	{
-	// 		fl_vertex(point.x, point.y);
-	// 	}
-	// 	fl_end_polygon();
-	// 	fl_color(frameColor);
-	// 	fl_begin_line();
-	// 	for (auto &point : points) 
-	// 	{
-	// 		fl_vertex(point.x, point.y);
-	// 	}
-	// 	fl_end_line();
+	//	Point{pos.x*60 + 100 - cellSize/2, pos.y*60 +100 - cellSize/2},  // haut gauche
+	//	Point{pos.x*60 + 100 - cellSize/2, pos.y*60 +100 + cellSize/2},  // haut droit
+	//	Point{pos.x*60 + 100 + cellSize/2, pos.y*60 +100 + cellSize/2},  // bas droit
+	//	Point{pos.x*60 + 100 + cellSize/2, pos.y*60 +100 - cellSize/2}, 	// bas gauche
+	//	Point{pos.x*60 + 100 - cellSize/2, pos.y*60 +100 - cellSize/2}  	// haut gauche
+	//};
+	//fl_color(cellColor);
+	//fl_begin_polygon();
+	//for (auto &point : points) 
+	//{
+	//	fl_vertex(point.x, point.y);
+	//}
+	//fl_end_polygon();
+	//fl_color(frameColor);
+	//fl_begin_line();
+	//for (auto &point : points) 
+	//{
+	//	fl_vertex(point.x, point.y);
+	//}
+	//fl_end_line();
 }
 
 
-int Cell::getPosX() const
+Point Cell::getPos() const
 {
-	return pos.x;
+	return pos;
 }
 
-
-int Cell::getPosY() const
-{
-	return pos.y;
-}
 
 
 bool Cell::getMoveInside() const
@@ -66,12 +60,15 @@ Cell &Cell::operator=(const Cell &other)
 {
 	if (this != &other) 
 	{
-		pos = other.pos;
+		pos.x = other.pos.y;
+		pos.y = other.pos.x;
 		cellColor = other.cellColor;
 		frameColor = other.frameColor;
+		canBeMoved = other.canBeMoved;
+		canMoveInside = other.canMoveInside;
 	}
 	return *this;
 }
 
 
-void Cell::setPos(const Point &newPos) { pos = newPos; }
+void Cell::setPos(const Point &newPos) { pos.x  = newPos.y; pos.y = newPos.x; }

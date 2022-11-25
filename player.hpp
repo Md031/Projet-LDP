@@ -13,8 +13,7 @@ public:
 	~Player() = default;
 	void keyPressed(int key);
 	void draw();
-	int getPosX();
-	int getPosY();
+	Point getPos();
 	void setX(int newX);
 	void setY(int newY);
 };

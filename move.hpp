@@ -18,15 +18,15 @@ private:
 	Point senseMovement; 	// direct dans laquelle il se déplace
 	int keyDepl;
 public:
-	Move(Board *board);
+	Move(Board *board, Point currentPos, int keyDepl);
 	Move();
 	~Move() = default;
+
 	bool checkMove();
 	bool isInBoard(int test);
 	bool canItMove();
 	void convertMove();
-	void setCurrentPos(Point playerPos);
-	void setKeyDepl(int key);
+	Cell findCell(Point &pos);
 };
 
 #endif
