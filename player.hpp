@@ -1,7 +1,9 @@
-#include "cell.hpp"
 
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
+
+#include "cell.hpp"
+
 
 class Player
 {
@@ -16,6 +18,7 @@ public:
 	Point getPos();
 	void setX(int newX);
 	void setY(int newY);
+	void moveAnim();
 };
 
 #endif

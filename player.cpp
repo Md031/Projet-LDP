@@ -30,7 +30,7 @@ void Player::keyPressed(int key)
 	switch (key)
 	{
 	case FL_Left:
-		currentPos.x -= 1; 
+		currentPos.x -= 1;
 		break;
 	case FL_Right:
 		currentPos.x += 1;
@@ -41,15 +41,25 @@ void Player::keyPressed(int key)
 	case FL_Down:
 		currentPos.y += 1;
 		break;
-	case 'q':
-		exit(0);
     }
 }
 
 
 void Player::draw()
 {
+
 	Point posDessin{currentPos.x*60+15, currentPos.y*60+15};
-	fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, FL_GREEN);
+	fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, fl_rgb_color(0, 0, 204));
   	fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 30, 30, FL_BLACK);
+}
+
+
+void Player::moveAnim()
+{
+	for (int i = 0; i < 60; i++)
+	{
+		Point posDessin{currentPos.x*60+i, currentPos.y*60+i};
+		fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, FL_GREEN);
+  		fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 30, 30, FL_BLACK);
+  	}
 }

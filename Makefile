@@ -1,9 +1,8 @@
 FLAGS=-lfltk -Wall -std=c++17
 COMPILER=g++
-EXECPATH = \executable\
 
-sokoban: sokoban.cpp board.o cell.o wall.o player.o box.o move.o
-	${COMPILER} sokoban.cpp wall.o board.o cell.o player.o box.o move.o -o sokoban ${FLAGS}
+sokoban: sokoban.cpp board.o cell.o wall.o player.o box.o move.o target.o
+	${COMPILER} sokoban.cpp wall.o board.o cell.o player.o box.o move.o target.o -o sokoban ${FLAGS}
 
 board.o: board.cpp board.hpp
 	${COMPILER} -c board.cpp ${FLAGS}
@@ -22,3 +21,6 @@ box.o: box.cpp box.hpp
 
 move.o: move.cpp move.hpp
 	${COMPILER} -c move.cpp ${FLAGS}
+
+target.o: target.cpp target.hpp
+	${COMPILER} -c target.cpp ${FLAGS}

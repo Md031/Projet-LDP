@@ -6,6 +6,7 @@
 #include "wall.hpp"
 #include "cell.hpp"
 #include "box.hpp"
+#include "target.hpp"
 #include "player.hpp"
 #include "move.hpp"
 
@@ -25,6 +26,7 @@ private:
 	string dirDepl;
 	Player* player;
 	Move* move;
+	int targetCount = 0;
 public:
 	Board(string levelFile);
 	~Board();
@@ -39,6 +41,8 @@ public:
 	Cell* getCell(const Point &pos);
 	Point getSize();
 	void setCell(Point pos, Cell *newCell);
+	bool checkWin();
+	void updateTargetCount(int updt);
 };
 
 

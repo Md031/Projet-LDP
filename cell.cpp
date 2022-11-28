@@ -2,7 +2,8 @@
 #include "cell.hpp"
 
 
-Cell::Cell(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside) : pos{Point(pos)}, cellColor{cellColor}, frameColor{frameColor}, canBeMoved{canBeMoved}, canMoveInside{canMoveInside} {}
+Cell::Cell(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget) : 
+pos{Point(pos)}, cellColor{cellColor}, frameColor{frameColor}, canBeMoved{canBeMoved}, canMoveInside{canMoveInside}, isATarget{isATarget} {}
 
 
 Cell::Cell() {}
@@ -47,6 +48,12 @@ Point Cell::getPos() const
 bool Cell::getMoveInside() const
 {
 	return canMoveInside;
+}
+
+
+bool Cell::getIsTarget() const
+{
+	return isATarget;
 }
 
 

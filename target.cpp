@@ -1,8 +1,7 @@
 
-#include "box.hpp"
+#include "target.hpp"
 
-
-Box::Box(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget) 
+Target::Target(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget) 
 {
 	this->pos = pos;
 	this->cellColor = cellColor;
@@ -13,4 +12,4 @@ Box::Box(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bo
 }
 
 
-Box::Box() {}
+Target::Target() {}

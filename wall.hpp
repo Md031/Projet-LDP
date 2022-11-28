@@ -7,7 +7,8 @@
 class Wall : public Cell
 {
 public:
-	Wall(Point pos, Fl_Color cellColor = FL_BLUE, Fl_Color frameColor = FL_BLACK, bool canBeMoved = false, bool canMoveInside = false);
+	Wall(Point pos, Fl_Color cellColor = fl_rgb_color(102, 51, 0), Fl_Color frameColor = FL_BLACK, 
+		bool canBeMoved = false, bool canMoveInside = false, bool isATarget = false);
 	Wall();
 	~Wall() override = default;
 };

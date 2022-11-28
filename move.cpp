@@ -43,15 +43,24 @@ bool Move::canItMove()  // si le déplacement de la box est possible on doit cha
 		wishedDepl.y += senseMovement.y;
 		if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
 		{
-			Cell *tempCell = board->getCell(wishedDepl);
-			Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
-			board->setCell(wishedDepl, tempBox);
-			tempBox->setPos(wishedDepl);
-			wishedDepl.x -= senseMovement.x;					// reset du mouvement
-			wishedDepl.y -= senseMovement.y;
-			board->setCell(wishedDepl, tempCell);
-			tempCell->setPos(wishedDepl);
-			return true;
+			if (board->getCell(wishedDepl)->getIsTarget())  // si la box est une target
+			{
+				board->updateTargetCount(-1);
+				
+			}
+			else
+			{
+				Cell *tempCell = board->getCell(wishedDepl);
+				Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
+				board->setCell(wishedDepl, tempBox);
+				tempBox->setPos(wishedDepl);
+				wishedDepl.x -= senseMovement.x;  // reset du mouvement
+				wishedDepl.y -= senseMovement.y;
+				board->setCell(wishedDepl, tempCell);
+				tempCell->setPos(wishedDepl);
+				return true;
+			}
+			
 		}
 		else
 		{

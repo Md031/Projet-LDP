@@ -16,7 +16,7 @@ private:
 	Point currentPos;  		// position du joueur
 	Point wishedDepl;  		// position où le joueur veut aller
 	Point senseMovement; 	// direct dans laquelle il se déplace
-	int keyDepl;
+	int keyDepl;			// le keycode du déplacement
 public:
 	Move(Board *board, Point currentPos, int keyDepl);
 	Move();

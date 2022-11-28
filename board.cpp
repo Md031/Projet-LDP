@@ -44,6 +44,12 @@ void Board::createMatrix()
 				cases = new Box({column, row});
 				tempContent.push_back(cases);
 			}
+			else if (fileContent[column] == '4')
+			{
+				cases = new Target({column, row});
+				tempContent.push_back(cases);
+				targetCount += 1;
+			}
 		}
 		boardMatrix.push_back(tempContent);
 		row++;  // passer à la ligne suivante de la matrice
@@ -60,6 +66,12 @@ void Board::draw()
 		}
 	}
 	player->draw();
+	if (checkWin())
+	{
+		fl_font(FL_HELVETICA,75);
+		fl_color(fl_rgb_color(0,0,255));
+		fl_draw("GG",0,0,1000,700,FL_ALIGN_CENTER,nullptr,false);
+	}
 }
 
 Board::~Board()
@@ -101,4 +113,16 @@ Point Board::getSize()
 void Board::setCell(Point pos, Cell *newCell)
 {
 	 boardMatrix[pos.x][pos.y] = newCell;
+}
+
+
+bool Board::checkWin()
+{
+	return targetCount == 0;
+}
+
+
+void Board::updateTargetCount(int updt)
+{
+	targetCount += updt;
 }
