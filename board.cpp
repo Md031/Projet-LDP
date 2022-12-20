@@ -9,6 +9,11 @@ void Board::init()
 	createMatrix();
 }
 
+// struct Target
+// {
+	// bool isFull = false;
+// };
+
 
 void Board::createMatrix()
 {
@@ -55,6 +60,7 @@ void Board::createMatrix()
 		row++;  // passer à la ligne suivante de la matrice
 	}
 }
+
 
 void Board::draw()
 {

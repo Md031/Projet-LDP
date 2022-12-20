@@ -1,7 +1,7 @@
 
 #include "wall.hpp"
 
-Wall::Wall(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget) 
+Wall::Wall(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget)
 {
 	this->pos = pos;
 	this->cellColor = cellColor;
