@@ -9,11 +9,6 @@ void Board::init()
 	createMatrix();
 }
 
-// struct Target
-// {
-	// bool isFull = false;
-// };
-
 
 void Board::createMatrix()
 {
@@ -25,36 +20,25 @@ void Board::createMatrix()
 	Cell* cases;
 	while (getline(readFile, fileContent))  // on récupère le design du niveau
 	{
-		tempContent = {};
+		tempContent = {};  // reset du vecteur tempContent
 		for (int column = 0; column < (int)fileContent.length(); column++)
 		{
-			if (fileContent[column] == '0')  // murs infranchissable 
-			{
-				cases = new Wall({column, row});
-				tempContent.push_back(cases);
-			}
-			else if (fileContent[column] == '1')  // murs vide pour se déplacer
-			{
-				cases = new Cell({column, row});
-				tempContent.push_back(cases);
-			}
-			else if (fileContent[column] == '2')  // joueur
+			if (fileContent[column] == 'W') 	 cases = new Wall({column, row});  	// murs infranchissable 
+			else if (fileContent[column] == 'E') cases = new Cell({column, row});  	// murs vide pour se déplacer
+			else if (fileContent[column] == 'B') cases = new Box({column, row});  	// boites qu'on peut bouger 
+			else if (fileContent[column] == 'P')  // la case du joueur
 			{
 				cases = new Cell({column, row});
 				player = new Player({column, row});
-				tempContent.push_back(cases);
 			}
-			else if (fileContent[column] == '3')  // boites qu'on peut bouger
+			else if (fileContent[column] == 'T')  // les cases des targets
 			{
-				cases = new Box({column, row});
-				tempContent.push_back(cases);
-			}
-			else if (fileContent[column] == '4')
-			{
-				cases = new Target({column, row});
-				tempContent.push_back(cases);
+				cases = new Cell({column, row});
+				Target* targetTemp = new Target({column, row});
+				targetGoal.push_back(targetTemp);  // on récupère la position des targets
 				targetCount += 1;
 			}
+			if (isalpha(fileContent[column])) tempContent.push_back(cases);  // check isalnum pour ne pas push back le /n ou /0 du fichier
 		}
 		boardMatrix.push_back(tempContent);
 		row++;  // passer à la ligne suivante de la matrice
@@ -71,6 +55,10 @@ void Board::draw()
  			c->draw();
 		}
 	}
+	for (auto &v: targetGoal)
+	{
+		if (!v->getFullness()) v->draw();  // si la target n'est pas rempli on la dessine 
+	}
 	player->draw();
 	if (checkWin())
 	{
@@ -83,6 +71,7 @@ void Board::draw()
 Board::~Board()
 {
 	delete player;
+	for (auto &v: targetGoal) delete v;
 	for (auto &v : boardMatrix)
 	{
 		for (auto &c : v)
@@ -95,7 +84,7 @@ Board::~Board()
 
 void Board::keyPressed(int key)
 {
-	move = new Move(this, player->getPos(), key);
+	move = new Move(this, player->getPos(), key, targetGoal);
 	if (move->checkMove())
 	{
 		player->keyPressed(key);

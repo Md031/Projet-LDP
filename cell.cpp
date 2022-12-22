@@ -2,8 +2,14 @@
 #include "cell.hpp"
 
 
+bool Point::comparePoint(Point otherPoint)
+{
+	return (x == otherPoint.y) && (y == otherPoint.x);
+}
+
+
 Cell::Cell(Point pos, Fl_Color cellColor, Fl_Color frameColor, bool canBeMoved, bool canMoveInside, bool isATarget) : 
-pos{Point(pos)}, cellColor{cellColor}, frameColor{frameColor}, canBeMoved{canBeMoved}, canMoveInside{canMoveInside}, isATarget{isATarget} {}
+	pos{Point(pos)}, cellColor{cellColor}, frameColor{frameColor}, canBeMoved{canBeMoved}, canMoveInside{canMoveInside}, isATarget{isATarget} {}
 
 
 Cell::Cell() {}

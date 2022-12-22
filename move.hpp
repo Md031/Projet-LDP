@@ -17,8 +17,9 @@ private:
 	Point wishedDepl;  		// position où le joueur veut aller
 	Point senseMovement; 	// direct dans laquelle il se déplace
 	int keyDepl;			// le keycode du déplacement
+	vector<Target*> targetGoal;
 public:
-	Move(Board *board, Point currentPos, int keyDepl);
+	Move(Board *board, Point currentPos, int keyDepl, vector<Target*> targetGoal);
 	Move();
 	~Move() = default;
 

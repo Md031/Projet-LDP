@@ -11,6 +11,7 @@ using namespace std;
 struct Point
 {
 	int x, y;
+	bool comparePoint(Point otherPoint);
 };
 
 

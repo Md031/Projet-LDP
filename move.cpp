@@ -4,7 +4,8 @@
 #include <iostream>
 using namespace std;
 
-Move::Move(Board *board, Point currentPos, int keyDepl) : board{board}, currentPos{currentPos}, keyDepl{keyDepl} {}
+Move::Move(Board *board, Point currentPos, int keyDepl, vector<Target*> targetGoal) 
+	: board{board}, currentPos{currentPos}, keyDepl{keyDepl}, targetGoal{targetGoal} {}
 
 
 Move::Move() {}
@@ -37,45 +38,41 @@ bool Move::isInBoard(int test)
 
 bool Move::canItMove()  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
 {
-	if (board->getCell(wishedDepl)->getCanBeMoved())  // si elle peut pas être bougé vérifier que derrière elle s'est possible aussi
+	if (!board->getCell(wishedDepl)->getCanBeMoved()) return true;  // si on peut bouger et que c'est pas une box où on atterit
+	wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
+	wishedDepl.y += senseMovement.y;
+	if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
 	{
-		wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
-		wishedDepl.y += senseMovement.y;
-		if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
+		for (auto &c: targetGoal)  // on vérifie si on ne ramène pas la box sur une target
 		{
-			if (board->getCell(wishedDepl)->getIsTarget())  // si la box est une target
+			if (wishedDepl.comparePoint(c->getPos()))  // si la box arrive sur une target on la cache
 			{
+				c->reverseFullness();
 				board->updateTargetCount(-1);
-				
 			}
-			else
-			{
-				Cell *tempCell = board->getCell(wishedDepl);
-				Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
-				board->setCell(wishedDepl, tempBox);
-				tempBox->setPos(wishedDepl);
-				wishedDepl.x -= senseMovement.x;  // reset du mouvement
-				wishedDepl.y -= senseMovement.y;
-				board->setCell(wishedDepl, tempCell);
-				tempCell->setPos(wishedDepl);
-				return true;
-			}
-			
 		}
-		else
-		{
-			wishedDepl.x -= senseMovement.x; 						// reset du mouvement
-			wishedDepl.y -= senseMovement.y;
-		}
-		return false;
+		Cell *tempCell = board->getCell(wishedDepl);
+		Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
+		board->setCell(wishedDepl, tempBox);
+		tempBox->setPos(wishedDepl);
+		wishedDepl.x -= senseMovement.x;  // reset du mouvement
+		wishedDepl.y -= senseMovement.y;
+		board->setCell(wishedDepl, tempCell);
+		tempCell->setPos(wishedDepl);
+		return true;
 	}
-	return true;   // si elle peut pas être bougé return true
+	else
+	{
+		wishedDepl.x -= senseMovement.x; // reset du mouvement
+		wishedDepl.y -= senseMovement.y;
+	}
+	return false;
 }
 
 
 void Move::convertMove()
 {
-	senseMovement = Point{0,0};
+	senseMovement = Point{0,0};  // permet de déterminer le sens du mouvement
 	switch (keyDepl)
 	{
 	case FL_Left:
@@ -96,9 +93,3 @@ void Move::convertMove()
     wishedDepl.x = currentPos.y + senseMovement.x;
     wishedDepl.y = currentPos.x + senseMovement.y;
 }
-
-
-//Cell Move::findCell(Point &pos)
-//{
-//	return board->boardMatrix[pos.x/60].at(pos.y/60);
-//}

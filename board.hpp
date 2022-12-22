@@ -23,9 +23,10 @@ class Board
 private:
 	string levelFile;
 	vector<vector<Cell*>> boardMatrix = {};
-	string dirDepl;
-	Player* player;
-	Move* move;
+	vector<Target*> targetGoal = {};  // vecteur qui contient toutes les target
+	string dirDepl;  // déplacement désiré
+	Player* player;  // le player 
+	Move* move;		 // le mouvement fait par le player
 	int targetCount = 0;
 public:
 	Board(string levelFile);
