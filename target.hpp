@@ -1,7 +1,6 @@
 
 #ifndef TARGET_HPP
 #define TARGET_HPP
-
 #include "cell.hpp"
 
 class Target

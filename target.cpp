@@ -1,6 +1,7 @@
 
 #include "target.hpp"
 
+
 Target::Target(Point pos) : pos{pos} {}
 
 
@@ -18,7 +19,9 @@ void Target::draw()
 void Target::reverseFullness()
 {
 	if (isFull) isFull = false;
+
 	else isFull = true;
+
 }
 
 
