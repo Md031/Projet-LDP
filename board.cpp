@@ -121,3 +121,4 @@ void Board::updateTargetCount(int updt)
 {
 	targetCount += updt;
 }
+int Board::getTargetCount(){return targetCount;}

@@ -17,6 +17,7 @@ bool Move::checkMove()  // faire tous les if
 	int test = 1;
 	if (!isInBoard(test)) return false;
 	if (!(board->getCell(wishedDepl)->getMoveInside())) return false;
+	if (board->getTargetCount() == 0) return false;
 	return true;
 }
 
@@ -39,9 +40,18 @@ bool Move::isInBoard(int test)
 bool Move::canItMove()  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
 {
 	if (!board->getCell(wishedDepl)->getCanBeMoved()) return true;  // si on peut bouger et que c'est pas une box où on atterit
+		
+	wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
+	wishedDepl.y += senseMovement.y;
+	if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
+	{
+
+		Point temp = Point{wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y};
+
 		for (auto &c: targetGoal)  // on vérifie si on ne ramène pas la box sur une target
 		{
-			if (wishedDepl.comparePoint(c->getPos()))  // si la box arrive sur une target on la cache
+
+			if (temp.comparePoint(c->getPos()))  // si la box arrive sur une target on la cache
 			{
 				if(c->getFullness()){ 
 					c->reverseFullness();
@@ -49,16 +59,9 @@ bool Move::canItMove()  // si le déplacement de la box est possible on doit cha
 									}
 			}
 
-		}
 
 
-	wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
-	wishedDepl.y += senseMovement.y;
-	if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
-	{
-		for (auto &c: targetGoal)  // on vérifie si on ne ramène pas la box sur une target
-		{
-			if (wishedDepl.comparePoint(c->getPos()))  // si la box arrive sur une target on la cache
+			else if (wishedDepl.comparePoint(c->getPos()))  // si la box arrive sur une target on la cache
 			{
 				c->reverseFullness();
 				board->updateTargetCount(-1);

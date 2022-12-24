@@ -44,6 +44,7 @@ public:
 	void setCell(Point pos, Cell *newCell);
 	bool checkWin();
 	void updateTargetCount(int updt);
+	int getTargetCount();
 };
 
 
