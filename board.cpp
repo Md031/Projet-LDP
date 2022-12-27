@@ -1,13 +1,7 @@
 #include "board.hpp"
 
 
-Board::Board(const string levelFile) : levelFile{levelFile} {init();}
-
-
-void Board::init()
-{
-	createMatrix();
-}
+Board::Board(const string levelFile) : levelFile{levelFile} { createMatrix();}
 
 
 void Board::createMatrix()
@@ -18,6 +12,9 @@ void Board::createMatrix()
 	vector<Cell*> tempContent;
 	int row = 0;
 	Cell* cases;
+	string maxStepCount;
+	getline(readFile, maxStepCount);
+	maxStep = stoi(maxStepCount);
 	while (getline(readFile, fileContent))  // on récupère le design du niveau
 	{
 		tempContent = {};  // reset du vecteur tempContent
@@ -60,6 +57,8 @@ void Board::draw()
 		if (!v->getFullness()) v->draw();  // si la target n'est pas rempli on la dessine 
 	}
 	player->draw();
+	printCurrentStep();
+	if (maxStep != 0) printMaxStep();
 	if (checkWin())
 	{
 		fl_font(FL_HELVETICA,75);
@@ -88,6 +87,7 @@ void Board::keyPressed(int key)
 	if (move->checkMove())
 	{
 		player->keyPressed(key);
+		currentStep++;
 	}
 	delete move;
 }
@@ -99,26 +99,34 @@ string Board::getLvlFile() { return levelFile; }
 Cell*  Board::getCell(const Point &pos) { return boardMatrix[pos.x][pos.y]; }
 
 
-Point Board::getSize()
-{ 
-	return Point{(int)boardMatrix.size(), (int)boardMatrix[0].size()}; 
-}
+Point Board::getSize() { return Point{(int)boardMatrix.size(), (int)boardMatrix[0].size()}; }
 
 
-void Board::setCell(Point pos, Cell *newCell)
-{
-	 boardMatrix[pos.x][pos.y] = newCell;
-}
+void Board::setCell(Point pos, Cell *newCell) { boardMatrix[pos.x][pos.y] = newCell; }
 
 
-bool Board::checkWin()
-{
-	return targetCount == 0;
-}
+bool Board::checkWin() { return targetCount == 0; }
 
 
-void Board::updateTargetCount(int updt)
-{
-	targetCount += updt;
-}
+void Board::updateTargetCount(int updt) { targetCount += updt; }
+
+
 int Board::getTargetCount(){return targetCount;}
+
+
+void Board::printCurrentStep()
+{
+	string printStep = "Your current step : " + to_string(currentStep);
+	fl_font(FL_HELVETICA,30);
+	fl_color(fl_rgb_color(0,0,0));
+	fl_draw(printStep.c_str(),0,0,350,50,FL_ALIGN_CENTER,nullptr,false);
+}
+
+
+void Board::printMaxStep()
+{
+	string printMax = "Max step for this level : " + to_string(maxStep);
+	fl_font(FL_HELVETICA,30);
+	fl_color(fl_rgb_color(0,0,0));
+	fl_draw(printMax.c_str(),0,0,425,150,FL_ALIGN_CENTER,nullptr,false);
+}

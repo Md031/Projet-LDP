@@ -14,21 +14,22 @@
 
 #include "board.hpp"
 
-
-const int windowWidth = Fl::w();
-const int windowHeight = Fl::h();
-const double refreshPerSecond = 60;
+enum Key { Up = FL_Up, Down = FL_Down, Left = FL_Left, Right = FL_Right };
 
 // DO NOT EDIT HERE !!!!
 class MainWindow : public Fl_Window 
 {
 private:
+    const int windowWidth;
+    const int windowHeight;
+    static constexpr double refreshPerSecond = 60;
     string currentLevel = "Levels/Level 0.txt";
     string directory = "Levels/Level ";
     string output = ".txt";
     Board *board = new Board(currentLevel);
 public:
-    MainWindow() : Fl_Window(500, 225, windowWidth, windowHeight, "Sokoban") 
+    MainWindow(const int windowWidth = Fl::w(), const int windowHeight = Fl::h()) 
+        : Fl_Window(500, 225, windowWidth, windowHeight, "Sokoban"), windowWidth{windowWidth}, windowHeight{windowHeight} 
     {
         Fl::add_timeout(1.0/refreshPerSecond, Timer_CB, this);
         resizable(this);

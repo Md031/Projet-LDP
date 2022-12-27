@@ -28,16 +28,16 @@ private:
 	Player* player;  // le player 
 	Move* move;		 // le mouvement fait par le player
 	int targetCount = 0;
+	int currentStep = 0;
+	int maxStep = 0;
 public:
 	Board(string levelFile);
 	~Board();
 	
 	void keyPressed(int key);
-	void init();
 	void draw();
 
 	void createMatrix();
-	
 	string getLvlFile();
 	Cell* getCell(const Point &pos);
 	Point getSize();
@@ -45,6 +45,8 @@ public:
 	bool checkWin();
 	void updateTargetCount(int updt);
 	int getTargetCount();
+	void printCurrentStep();
+	void printMaxStep();
 };
 
 

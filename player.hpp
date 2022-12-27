@@ -20,7 +20,6 @@ public:
 	Point getPos();
 	void setX(int newX);
 	void setY(int newY);
-	void moveAnim();
 };
 
 #endif

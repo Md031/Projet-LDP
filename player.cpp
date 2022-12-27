@@ -47,19 +47,6 @@ void Player::keyPressed(int key)
 
 void Player::draw()
 {
-
-	Point posDessin{currentPos.x*60+35, currentPos.y*60+35};
-	fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, cellColor);
-  	fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 30, 30, frameColor);
-}
-
-
-void Player::moveAnim()
-{
-	for (int i = 0; i < 60; i++)
-	{
-		Point posDessin{currentPos.x*60+i, currentPos.y*60+i};
-		fl_draw_box(FL_FLAT_BOX, posDessin.x, posDessin.y, 30, 30, FL_GREEN);
-  		fl_draw_box(FL_BORDER_FRAME, posDessin.x, posDessin.y, 30, 30, frameColor);
-  	}
+	fl_draw_box(FL_FLAT_BOX, 	 currentPos.x*60+15, currentPos.y*60+115, 30, 30, cellColor);
+  	fl_draw_box(FL_BORDER_FRAME, currentPos.x*60+15, currentPos.y*60+115, 30, 30, frameColor);
 }
