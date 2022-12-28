@@ -25,8 +25,9 @@ void Player::setY(int newY)
 	currentPos.y = newY;
 }
 
-void Player::keyPressed(int key)
-{	
+
+void Player::deplacement(int key, Point newPos)
+{	if (key == 0) currentPos = newPos;
 	switch (key)
 	{
 	case FL_Left:

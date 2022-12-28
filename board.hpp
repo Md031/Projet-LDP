@@ -9,6 +9,7 @@
 #include "target.hpp"
 #include "player.hpp"
 #include "move.hpp"
+#include "teleportation.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -24,12 +25,15 @@ private:
 	string levelFile;
 	vector<vector<Cell*>> boardMatrix = {};
 	vector<Target*> targetGoal = {};  // vecteur qui contient toutes les target
+	vector<Teleportation*> tpVector = {};
 	string dirDepl;  // déplacement désiré
 	Player* player;  // le player 
+	Point playerPos;	 // pour que le board puisse faire des simulations de déplacements
 	Move* move;		 // le mouvement fait par le player
 	int targetCount = 0;
 	int currentStep = 0;
 	int maxStep = 0;
+	string printFinal = "You win";
 public:
 	Board(string levelFile);
 	~Board();
@@ -47,6 +51,8 @@ public:
 	int getTargetCount();
 	void printCurrentStep();
 	void printMaxStep();
+	vector<Teleportation*> getTpVector();
+	void simulationMove(Point& simulate, int key);
 };
 
 

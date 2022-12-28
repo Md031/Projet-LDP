@@ -35,7 +35,13 @@ void Board::createMatrix()
 				targetGoal.push_back(targetTemp);  // on récupère la position des targets
 				targetCount += 1;
 			}
-			if (isalpha(fileContent[column])) tempContent.push_back(cases);  // check isalnum pour ne pas push back le /n ou /0 du fichier
+			else if ( '1' == fileContent[column]) // les cases pour les tp, chaque tp sera relié à une autre case avec le même numéro
+			{
+				cases = new Cell({column, row});
+				Teleportation* tpTemp = new Teleportation({column, row});
+				tpVector.push_back(tpTemp);
+			}
+			if (isalnum(fileContent[column])) tempContent.push_back(cases);  // check isalnum pour ne pas push back le /n ou /0 du fichier
 		}
 		boardMatrix.push_back(tempContent);
 		row++;  // passer à la ligne suivante de la matrice
@@ -47,11 +53,9 @@ void Board::draw()
 {
 	for (auto &v: boardMatrix)
 	{
-    	for (auto &c: v)
-    	{
- 			c->draw();
-		}
+    	for (auto &c: v) c->draw();
 	}
+	for (auto &v: tpVector) v->draw();
 	for (auto &v: targetGoal)
 	{
 		if (!v->getFullness()) v->draw();  // si la target n'est pas rempli on la dessine 
@@ -61,9 +65,10 @@ void Board::draw()
 	if (maxStep != 0) printMaxStep();
 	if (checkWin())
 	{
-		fl_font(FL_HELVETICA,75);
+		if (currentStep > maxStep) printFinal = "You lose";
+		fl_font(FL_HELVETICA,50);
 		fl_color(fl_rgb_color(0,0,255));
-		fl_draw("GG",0,0,1000,700,FL_ALIGN_CENTER,nullptr,false);
+		fl_draw(printFinal.c_str(),0,0,1200,100,FL_ALIGN_CENTER,nullptr,false);
 	}
 }
 
@@ -71,22 +76,41 @@ Board::~Board()
 {
 	delete player;
 	for (auto &v: targetGoal) delete v;
-	for (auto &v : boardMatrix)
+	for (auto &v: tpVector) delete v;
+	for (auto &v: boardMatrix)
 	{
-		for (auto &c : v)
-		{
-			delete c;
-		}
+		for (auto &c: v) delete c; 
 	}
 }
 
 
 void Board::keyPressed(int key)
 {
+	cout << playerPos.x <<  " " << playerPos.y << endl;
+	playerPos = player->getPos();
+	simulationMove(playerPos, key);
+	cout << playerPos.x <<  " " << playerPos.y << endl;
+	cout << "pos tp : " << tpVector.at(0)->getPos().x << " " << tpVector.at(0)->getPos().y << endl;
+	if (playerPos.comparePoint(tpVector.at(0)->getPos())) 
+	{
+		cout << "a" << endl;
+		playerPos = tpVector.at(1)->getPos(); 
+		player->deplacement(0, playerPos);
+		currentStep++;
+		return;
+	}
+	else if (playerPos.comparePoint(tpVector.at(1)->getPos())) 
+	{ 
+		cout << "a" << endl;
+		playerPos = tpVector.at(0)->getPos(); 
+		player->deplacement(0, playerPos);
+		currentStep++;
+		return;
+	}
 	move = new Move(this, player->getPos(), key, targetGoal);
 	if (move->checkMove())
 	{
-		player->keyPressed(key);
+		player->deplacement(key, playerPos);
 		currentStep++;
 	}
 	delete move;
@@ -111,7 +135,10 @@ bool Board::checkWin() { return targetCount == 0; }
 void Board::updateTargetCount(int updt) { targetCount += updt; }
 
 
-int Board::getTargetCount(){return targetCount;}
+int Board::getTargetCount() { return targetCount; }
+
+
+vector<Teleportation*> Board::getTpVector() { return tpVector; }
 
 
 void Board::printCurrentStep()
@@ -129,4 +156,24 @@ void Board::printMaxStep()
 	fl_font(FL_HELVETICA,30);
 	fl_color(fl_rgb_color(0,0,0));
 	fl_draw(printMax.c_str(),0,0,425,150,FL_ALIGN_CENTER,nullptr,false);
+}
+
+
+void Board::simulationMove(Point &simulate, int key)
+{
+	switch (key)
+	{
+	case FL_Left:
+		simulate.x -= 1;
+		break;
+	case FL_Right:
+		simulate.x += 1;
+		break;
+	case FL_Up:
+		simulate.y -= 1;
+		break;
+	case FL_Down:
+		simulate.y += 1;
+		break;
+    }
 }

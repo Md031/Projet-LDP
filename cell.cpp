@@ -4,7 +4,7 @@
 
 bool Point::comparePoint(Point otherPoint)
 {
-	return (x == otherPoint.y) && (y == otherPoint.x);
+	return (x == otherPoint.x) && (y == otherPoint.y);
 }
 
 

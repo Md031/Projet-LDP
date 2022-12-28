@@ -1,8 +1,8 @@
 FLAGS=-lfltk -Wall -std=c++17
 COMPILER=g++
 
-sokoban: sokoban.cpp board.o cell.o wall.o player.o box.o move.o target.o
-	${COMPILER} sokoban.cpp wall.o board.o cell.o player.o box.o move.o target.o -o sokoban ${FLAGS}
+sokoban: sokoban.cpp board.o cell.o wall.o player.o box.o move.o target.o teleportation.o
+	${COMPILER} sokoban.cpp wall.o board.o cell.o player.o box.o move.o target.o teleportation.o -o sokoban ${FLAGS}
 
 board.o: board.cpp board.hpp
 	${COMPILER} -c board.cpp ${FLAGS}
@@ -24,3 +24,6 @@ move.o: move.cpp move.hpp
 
 target.o: target.cpp target.hpp
 	${COMPILER} -c target.cpp ${FLAGS}
+
+teleportation.o: teleportation.hpp teleportation.cpp
+	${COMPILER} -c teleportation.cpp ${FLAGS}
