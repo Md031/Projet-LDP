@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 {
     MainWindow* splashScreen = new MainWindow{"SplashScreen", 700,500};
     splashScreen->show(argc, argv);
-    Fl::add_timeout(3.0, deleteSplashScreen, static_cast<void*>(splashScreen));
+    Fl::add_timeout(2.0, deleteSplashScreen, static_cast<void*>(splashScreen));  // on delete le splashScreen et on affiche la window du jeu
     return Fl::run();
 }
 

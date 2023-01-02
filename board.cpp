@@ -16,11 +16,17 @@ void Board::createMatrix()
 	vector<Cell*> tempContent;
 	int row = 0;
 	Cell* cases;
-	string maxStepCount;
+
+	string maxStepCount;  // on récupère le nbr de pas max du niveau
 	getline(readFile, maxStepCount);
 	maxStep = stoi(maxStepCount);
+
+	string bestScore_s;
+	getline(readFile, bestScore_s);
+	bestScore = stoi(bestScore_s);
 	while (getline(readFile, fileContent))  // on récupère le design du niveau
 	{
+		levelContent.push_back(fileContent);
 		tempContent = {};  // reset du vecteur tempContent
 		for (int column = 0; column < (int)fileContent.length(); column++)
 		{
@@ -50,6 +56,7 @@ void Board::createMatrix()
 		boardMatrix.push_back(tempContent);
 		row++;  // passer à la ligne suivante de la matrice
 	}
+	readFile.close();
 }
 
 
@@ -68,7 +75,24 @@ void Board::draw()
 	printStepInfo();
 	if (checkWin())
 	{
-		if (currentStep > maxStep) printFinal = "You lose";
+		if (currentStep > maxStep && maxStep != 0) 
+		{
+			printFinal = "You lose";
+		}
+		else
+		{
+			fstream writingFile;
+			writingFile.open(levelFile, ios::out);
+			writingFile << to_string(maxStep) << endl;
+			if (bestScore == 0) writingFile << to_string(currentStep) << endl;
+			else if (currentStep <= bestScore) writingFile << to_string(currentStep) << endl;
+			else writingFile << to_string(bestScore) << endl;
+			for (auto &c : levelContent)
+			{
+				writingFile << c << endl;
+			}
+			writingFile.close();
+		}
 		fl_font(FL_HELVETICA, 50);
 		fl_color(fl_rgb_color(0, 0, 255));
 		fl_draw(printFinal.c_str(), 0, 0, 1200, 100, FL_ALIGN_CENTER, nullptr, false);
@@ -118,11 +142,14 @@ void Board::printStepInfo()
 {
 	string printStep = "Your current step : " + to_string(currentStep);
 	string printMaxStep = "";
+	string BestScoreLvl = "The best score for this level is : " + to_string(bestScore);
+	if (bestScore == 0) BestScoreLvl = "This level has no best score yet";
 	if (maxStep > 0) printMaxStep = "Max step for this level : " + to_string(maxStep);  // si on a un max step pour ce lvl
 	fl_font(FL_HELVETICA,30);
 	fl_color(fl_rgb_color(0,0,0));
-	fl_draw(printStep.c_str(),0,0,350,50,FL_ALIGN_CENTER,nullptr,false);
-	fl_draw(printMaxStep.c_str(),0,0,425,150,FL_ALIGN_CENTER,nullptr,false);
+	fl_draw(printStep.c_str(),160,20,0,0,FL_ALIGN_CENTER,nullptr,false);
+	fl_draw(printMaxStep.c_str(),201,50,0,0,FL_ALIGN_CENTER,nullptr,false);
+	fl_draw(BestScoreLvl.c_str(),255,80,0,0,FL_ALIGN_CENTER,nullptr,false);
 }
 
 

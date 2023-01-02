@@ -23,6 +23,7 @@ class Board
 {
 private:
 	string levelFile;
+	vector<string> levelContent = {};
 	vector<vector<Cell*>> boardMatrix = {};
 	vector<Target*> targetGoal = {};  // vecteur qui contient toutes les target
 	vector<Teleportation*> tpVector = {};
@@ -33,6 +34,7 @@ private:
 	int targetCount = 0;
 	int currentStep = 0;
 	int maxStep = 0;
+	int bestScore = 0;
 	string printFinal = "You win";
 public:
 	Board(string levelFile);
