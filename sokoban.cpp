@@ -2,6 +2,7 @@
 // These should include everything you might use
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Window.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Box.H>
 #include <string>
@@ -9,7 +10,7 @@
 #include <time.h>
 #include <chrono>
 #include <random>
-
+#include <unistd.h>
 #include <iostream>
 
 #include "board.hpp"
@@ -19,6 +20,7 @@
 class MainWindow : public Fl_Window 
 {
 private:
+    string windowName;
     const int windowWidth;
     const int windowHeight;
     static constexpr double refreshPerSecond = 60;
@@ -27,8 +29,8 @@ private:
     string output = ".txt";
     Board *board = new Board(currentLevel);
 public:
-    MainWindow(const int windowWidth = Fl::w(), const int windowHeight = Fl::h()) 
-        : Fl_Window(500, 0, windowWidth/2, windowHeight/2, "Sokoban"), windowWidth{windowWidth}, windowHeight{windowHeight}  // 500, 225 de base 
+    MainWindow(string windowName, const int windowWidth = Fl::w(), const int windowHeight = Fl::h()) 
+        : Fl_Window(500, 225, windowWidth, windowHeight, windowName.c_str()), windowName{windowName}, windowWidth{windowWidth}, windowHeight{windowHeight}  // 500, 225 de base 
     {
         Fl::add_timeout(1.0/refreshPerSecond, Timer_CB, this);
         resizable(this);
@@ -36,7 +38,13 @@ public:
     void draw() override 
     {
         Fl_Window::draw();
-        board->draw();
+        if (windowName == "Sokoban") board->draw();
+        else  // pour le splashScreen
+        {
+            fl_font(FL_HELVETICA,30);
+            fl_color(fl_rgb_color(0,0,0));
+            fl_draw("Welcome to Sokoban\n Made by Ziauddin Md and Benjana Moaad",0,0,675,450,FL_ALIGN_CENTER,nullptr,false);
+        }
     }
     int handle(int event) override 
     {
@@ -77,10 +85,29 @@ public:
     ~MainWindow() { delete board; }    
 };
 
+
+void closeInstances(Fl_Widget* widget, void* userdata)  // fonction qui sera appelé à la fermeture de la window pour assurer les delete
+{
+    MainWindow* window = (MainWindow*)widget;
+    delete window;
+}
+
+
+void deleteSplashScreen(void* data) {
+    MainWindow* splashScreen = (MainWindow*)(data);
+    splashScreen->hide();
+    delete splashScreen;
+    MainWindow* window = new MainWindow{"Sokoban"};
+    window->show();
+    window->callback((Fl_Callback*)closeInstances);  // pour delete les new à la fermeture de la window
+}
+
+
 int main(int argc, char *argv[]) 
 {
-    MainWindow window;
-    window.show(argc, argv);
+    MainWindow* splashScreen = new MainWindow{"SplashScreen", 700,500};
+    splashScreen->show(argc, argv);
+    Fl::add_timeout(3.0, deleteSplashScreen, static_cast<void*>(splashScreen));
     return Fl::run();
 }
 
