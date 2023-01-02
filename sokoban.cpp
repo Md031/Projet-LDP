@@ -14,7 +14,6 @@
 
 #include "board.hpp"
 
-enum Key { Up = FL_Up, Down = FL_Down, Left = FL_Left, Right = FL_Right };
 
 // DO NOT EDIT HERE !!!!
 class MainWindow : public Fl_Window 
@@ -29,7 +28,7 @@ private:
     Board *board = new Board(currentLevel);
 public:
     MainWindow(const int windowWidth = Fl::w(), const int windowHeight = Fl::h()) 
-        : Fl_Window(500, 225, windowWidth, windowHeight, "Sokoban"), windowWidth{windowWidth}, windowHeight{windowHeight} 
+        : Fl_Window(500, 0, windowWidth/2, windowHeight/2, "Sokoban"), windowWidth{windowWidth}, windowHeight{windowHeight}  // 500, 225 de base 
     {
         Fl::add_timeout(1.0/refreshPerSecond, Timer_CB, this);
         resizable(this);
@@ -61,9 +60,9 @@ public:
                     board->draw();
                 }
                 else if (Fl::event_key() == 'q') exit(0);  // pour fermer le jeu
-                else
-                {
-                    board->keyPressed(Fl::event_key());
+                else if (Fl::event_key() == FL_Up || Fl::event_key() == FL_Down || Fl::event_key() == FL_Right || Fl::event_key() == FL_Left)
+                { 
+                    board->keyPressed(Fl::event_key()); 
                 }          
         }
         return 0;

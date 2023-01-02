@@ -1,7 +1,11 @@
 #include "board.hpp"
 
 
-Board::Board(const string levelFile) : levelFile{levelFile} { createMatrix();}
+Board::Board(const string levelFile) : levelFile{levelFile} 
+{ 
+	createMatrix();
+	move = new Move(this, targetGoal);
+}
 
 
 void Board::createMatrix()
@@ -61,20 +65,20 @@ void Board::draw()
 		if (!v->getFullness()) v->draw();  // si la target n'est pas rempli on la dessine 
 	}
 	player->draw();
-	printCurrentStep();
-	if (maxStep != 0) printMaxStep();
+	printStepInfo();
 	if (checkWin())
 	{
 		if (currentStep > maxStep) printFinal = "You lose";
-		fl_font(FL_HELVETICA,50);
-		fl_color(fl_rgb_color(0,0,255));
-		fl_draw(printFinal.c_str(),0,0,1200,100,FL_ALIGN_CENTER,nullptr,false);
+		fl_font(FL_HELVETICA, 50);
+		fl_color(fl_rgb_color(0, 0, 255));
+		fl_draw(printFinal.c_str(), 0, 0, 1200, 100, FL_ALIGN_CENTER, nullptr, false);
 	}
 }
 
 Board::~Board()
 {
 	delete player;
+	delete move;
 	for (auto &v: targetGoal) delete v;
 	for (auto &v: tpVector) delete v;
 	for (auto &v: boardMatrix)
@@ -86,34 +90,31 @@ Board::~Board()
 
 void Board::keyPressed(int key)
 {
-	cout << playerPos.x <<  " " << playerPos.y << endl;
+	// playerPos = player->getPos();
+	// simulationMove(playerPos, key);
+	// if (playerPos.comparePoint(tpVector.at(0)->getPos())) 
+	// {
+		// playerPos = tpVector.at(1)->getPos(); 
+		// player->movePlayer(0, playerPos);
+		// currentStep++;
+		// return;
+	// }
+	// else if (playerPos.comparePoint(tpVector.at(1)->getPos())) 
+	// { 
+		// playerPos = tpVector.at(0)->getPos(); 
+		// player->movePlayer(0, playerPos);
+		// currentStep++;
+		// return;
+	// }
 	playerPos = player->getPos();
-	simulationMove(playerPos, key);
-	cout << playerPos.x <<  " " << playerPos.y << endl;
-	cout << "pos tp : " << tpVector.at(0)->getPos().x << " " << tpVector.at(0)->getPos().y << endl;
-	if (playerPos.comparePoint(tpVector.at(0)->getPos())) 
+	Point senseMov{0,0};
+	movement(key, senseMov);
+	if (move->checkMove(playerPos, senseMov))
 	{
-		cout << "a" << endl;
-		playerPos = tpVector.at(1)->getPos(); 
-		player->deplacement(0, playerPos);
-		currentStep++;
-		return;
-	}
-	else if (playerPos.comparePoint(tpVector.at(1)->getPos())) 
-	{ 
-		cout << "a" << endl;
-		playerPos = tpVector.at(0)->getPos(); 
-		player->deplacement(0, playerPos);
-		currentStep++;
-		return;
-	}
-	move = new Move(this, player->getPos(), key, targetGoal);
-	if (move->checkMove())
-	{
-		player->deplacement(key, playerPos);
+		playerPos += senseMov;
+		player->movePlayer(key, playerPos);
 		currentStep++;
 	}
-	delete move;
 }
 
 
@@ -141,39 +142,33 @@ int Board::getTargetCount() { return targetCount; }
 vector<Teleportation*> Board::getTpVector() { return tpVector; }
 
 
-void Board::printCurrentStep()
+void Board::printStepInfo()
 {
 	string printStep = "Your current step : " + to_string(currentStep);
+	string printMaxStep = "";
+	if (maxStep > 0) printMaxStep = "Max step for this level : " + to_string(maxStep);  // si on a un max step pour ce lvl
 	fl_font(FL_HELVETICA,30);
 	fl_color(fl_rgb_color(0,0,0));
 	fl_draw(printStep.c_str(),0,0,350,50,FL_ALIGN_CENTER,nullptr,false);
+	fl_draw(printMaxStep.c_str(),0,0,425,150,FL_ALIGN_CENTER,nullptr,false);
 }
 
 
-void Board::printMaxStep()
-{
-	string printMax = "Max step for this level : " + to_string(maxStep);
-	fl_font(FL_HELVETICA,30);
-	fl_color(fl_rgb_color(0,0,0));
-	fl_draw(printMax.c_str(),0,0,425,150,FL_ALIGN_CENTER,nullptr,false);
-}
-
-
-void Board::simulationMove(Point &simulate, int key)
+void Board::movement(int key, Point& senseMovement)
 {
 	switch (key)
 	{
 	case FL_Left:
-		simulate.x -= 1;
+		senseMovement.y -= 1;
 		break;
 	case FL_Right:
-		simulate.x += 1;
+		senseMovement.y += 1;
 		break;
 	case FL_Up:
-		simulate.y -= 1;
+		senseMovement.x -= 1;
 		break;
 	case FL_Down:
-		simulate.y += 1;
+		senseMovement.x += 1;
 		break;
     }
 }

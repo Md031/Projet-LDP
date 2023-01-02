@@ -27,3 +27,6 @@ target.o: target.cpp target.hpp
 
 teleportation.o: teleportation.hpp teleportation.cpp
 	${COMPILER} -c teleportation.cpp ${FLAGS}
+
+clean:
+	-rm *.o 2> /dev/null

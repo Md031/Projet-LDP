@@ -4,7 +4,30 @@
 
 bool Point::comparePoint(Point otherPoint)
 {
-	return (x == otherPoint.x) && (y == otherPoint.y);
+	return (x == otherPoint.y) && (y == otherPoint.x);
+}
+
+
+Point &Point::operator+=(const Point &other)  // surcharge opérateur +
+{
+	x += other.x;
+	y += other.y;
+	return *this;
+}
+
+
+Point &Point::operator=(const Point &other)
+{
+	x = other.y;
+	y = other.x;
+	return *this;
+}
+
+Point &Point::operator-=(const Point &other)  // surcharge opérateur +
+{
+	x -= other.x;
+	y -= other.y;
+	return *this;
 }
 
 
@@ -80,6 +103,10 @@ Cell &Cell::operator=(const Cell &other)
 		canBeMoved = other.canBeMoved;
 		canMoveInside = other.canMoveInside;
 	}
+	// Cell *tempCell = board->getCell(wishedDepl);
+	// Cell *tempBox = board->getCell({wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y});
+	// board->setCell(wishedDepl, tempBox);
+	// tempBox->setPos(wishedDepl);
 	return *this;
 }
 

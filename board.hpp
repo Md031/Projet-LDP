@@ -26,10 +26,10 @@ private:
 	vector<vector<Cell*>> boardMatrix = {};
 	vector<Target*> targetGoal = {};  // vecteur qui contient toutes les target
 	vector<Teleportation*> tpVector = {};
-	string dirDepl;  // déplacement désiré
-	Player* player;  // le player 
-	Point playerPos;	 // pour que le board puisse faire des simulations de déplacements
-	Move* move;		 // le mouvement fait par le player
+	string dirDepl;  	// déplacement désiré
+	Player* player;  	// le player 
+	Point playerPos;	// pour que le board puisse faire des simulations de déplacements
+	Move* move;		 	// le mouvement fait par le player
 	int targetCount = 0;
 	int currentStep = 0;
 	int maxStep = 0;
@@ -49,10 +49,10 @@ public:
 	bool checkWin();
 	void updateTargetCount(int updt);
 	int getTargetCount();
-	void printCurrentStep();
-	void printMaxStep();
+	void printStepInfo();
 	vector<Teleportation*> getTpVector();
 	void simulationMove(Point& simulate, int key);
+	void movement(int key, Point& senseMovement);  // permet de déterminer le sens du mouvement
 };
 
 

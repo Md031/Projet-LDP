@@ -8,25 +8,16 @@ Player::Player(Point currentPos) : currentPos{Point(currentPos)} {}
 Player::Player() {}
 
 
-Point Player::getPos() 
-{
-	return currentPos;
-}
+Point Player::getPos() { return currentPos; }
 
 
-void Player::setX(int newX)
-{
-	currentPos.x = newX;
-}
+void Player::setX(int newX) { currentPos.x = newX; }
 
 
-void Player::setY(int newY)
-{
-	currentPos.y = newY;
-}
+void Player::setY(int newY) { currentPos.y = newY; }
 
 
-void Player::deplacement(int key, Point newPos)
+void Player::movePlayer(int key, Point newPos)
 {	if (key == 0) currentPos = newPos;
 	switch (key)
 	{

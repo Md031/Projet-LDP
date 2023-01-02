@@ -15,7 +15,7 @@ public:
 	Player(Point currentPos);
 	Player();
 	~Player() = default;
-	void deplacement(int key, Point newPos);
+	void movePlayer(int key, Point newPos);
 	void draw();
 	Point getPos();
 	void setX(int newX);

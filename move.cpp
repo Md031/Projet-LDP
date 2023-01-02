@@ -4,45 +4,47 @@
 #include <iostream>
 using namespace std;
 
-Move::Move(Board *board, Point currentPos, int keyDepl, vector<Target*> targetGoal) 
-	: board{board}, currentPos{currentPos}, keyDepl{keyDepl}, targetGoal{targetGoal} { tpVector = board->getTpVector(); }
+Move::Move(Board *board, vector<Target*> targetGoal) 
+	: board{board}, targetGoal{targetGoal} {} //tpVector = board->getTpVector(); }
 
 
 Move::Move() {}
 
 
-bool Move::checkMove()  // faire tous les if
+bool Move::checkMove(Point posPlayer, Point senseMovement)  // faire tous les if
 {
-	if (!convertMove()) return false;
-	int test = 1;
-	if (!isInBoard(test)) return false;
-	if (!(board->getCell(wishedDepl)->getMoveInside())) return false;
+	posPlayer += senseMovement;
+	if (!isInBoard(posPlayer)) return false;
+	if (!canItMove(posPlayer, senseMovement)) return false;
+	if (!(board->getCell(posPlayer)->getMoveInside())) return false;
 	if (board->getTargetCount() == 0) return false;
 	return true;
 }
 
 
-bool Move::isInBoard(int test)
+bool Move::isInBoard(Point posPlayer)
 {
 	// si il est inférieur à 0 ou supérieur à la taille du vecteur on n'autorise pas le déplacement
-	if (wishedDepl.x < 0) return false;
-	if (wishedDepl.y < 0) return false;
-	if (wishedDepl.x >= board->getSize().x) return false;
-	if (wishedDepl.y >= board->getSize().y) return false;
-	if (test == 1)  // pour éviter les appels reccursif avec l'appel de canItMove()
-	{
-		if (!canItMove()) return false;	
- 	}
+	if (posPlayer.x < 0) return false;
+	if (posPlayer.y < 0) return false;
+	if (posPlayer.x >= board->getSize().x) return false;
+	if (posPlayer.y >= board->getSize().y) return false;
 	return true;
 }
 
 
-bool Move::canItMove()  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
+bool Move::canItMove(Point posPlayer, Point senseMovement)  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
 {
-	if (!board->getCell(wishedDepl)->getCanBeMoved()) return true;  // si on peut bouger et que c'est pas une box où on atterit
+	if (!board->getCell(posPlayer)->getCanBeMoved()) return true;  // si on peut bouger et que c'est pas une box où on atterit
+	return moveBox(posPlayer, senseMovement);  // si on passe le if c'est qu'on arrive sur une box
+}
+
+
+bool Move::moveBox(Point wishedDepl, Point senseMovement)
+{
 	wishedDepl.x += senseMovement.x;  // on verifie la case derrière la box qu'on veut bouger
 	wishedDepl.y += senseMovement.y;
-	if (isInBoard(2) && board->getCell(wishedDepl)->getMoveInside())
+	if (isInBoard(wishedDepl) && board->getCell(wishedDepl)->getMoveInside())
 	{
 		Point temp = Point{wishedDepl.x - senseMovement.x, wishedDepl.y - senseMovement.y};
 		for (auto &c: targetGoal)  // on vérifie si on ne ramène pas la box sur une target
@@ -77,30 +79,4 @@ bool Move::canItMove()  // si le déplacement de la box est possible on doit cha
 		wishedDepl.y -= senseMovement.y;
 	}
 	return false;
-}
-
-
-bool Move::convertMove()
-{
-	senseMovement = Point{0,0};  // permet de déterminer le sens du mouvement
-	switch (keyDepl)
-	{
-	case FL_Left:
-		senseMovement.y -= 1;
-		break;
-	case FL_Right:
-		senseMovement.y += 1;
-		break;
-	case FL_Up:
-		senseMovement.x -= 1;
-		break;
-	case FL_Down:
-		senseMovement.x += 1;
-		break;
-	default:
-		return false;
-    }
-    wishedDepl.x = currentPos.y + senseMovement.x;
-    wishedDepl.y = currentPos.x + senseMovement.y;
-    return true;
 }
