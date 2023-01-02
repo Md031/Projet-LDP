@@ -8,6 +8,19 @@ bool Point::comparePoint(Point otherPoint)
 }
 
 
+bool Point::operator==(const Point &other)
+{
+	return (x == other.y) && (y == other.x);
+}
+
+
+Point &Point::operator+(const Point &other)
+{
+	x += other.x;
+	y += other.y;
+	return *this;
+}
+
 Point &Point::operator+=(const Point &other)  // surcharge opérateur +
 {
 	x += other.x;

@@ -11,29 +11,16 @@ Player::Player() {}
 Point Player::getPos() { return currentPos; }
 
 
-void Player::setX(int newX) { currentPos.x = newX; }
+void Player::setX(int &newX) { currentPos.x = newX; }
 
 
-void Player::setY(int newY) { currentPos.y = newY; }
+void Player::setY(int &newY) { currentPos.y = newY; }
 
 
-void Player::movePlayer(int key, Point newPos)
-{	if (key == 0) currentPos = newPos;
-	switch (key)
-	{
-	case FL_Left:
-		currentPos.x -= 1;
-		break;
-	case FL_Right:
-		currentPos.x += 1;
-		break;
-	case FL_Up:
-		currentPos.y -= 1;
-		break;
-	case FL_Down:
-		currentPos.y += 1;
-		break;
-    }
+void Player::movePlayer(Point &newPos) 
+{ 
+	setX(newPos.x);
+	setY(newPos.y);
 }
 
 

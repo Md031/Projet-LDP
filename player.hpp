@@ -15,11 +15,11 @@ public:
 	Player(Point currentPos);
 	Player();
 	~Player() = default;
-	void movePlayer(int key, Point newPos);
+	void movePlayer(Point &newPos);
 	void draw();
 	Point getPos();
-	void setX(int newX);
-	void setY(int newY);
+	void setX(int &newX);
+	void setY(int &newY);
 };
 
 #endif

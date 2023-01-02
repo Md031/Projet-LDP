@@ -11,10 +11,12 @@ using namespace std;
 struct Point
 {
 	int x, y;
-	bool comparePoint(Point otherPoint);
+	bool  comparePoint(Point otherPoint);
 	Point &operator+=(const Point &other);
 	Point &operator-=(const Point &other);
+	Point &operator+(const Point &other);
 	Point &operator=(const Point &other);
+	bool  operator==(const Point &other);
 };
 
 

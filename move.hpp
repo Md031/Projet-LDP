@@ -22,11 +22,12 @@ public:
 	Move();
 	~Move() = default;
 
-	bool checkMove(Point posPlayer, Point senseMovement);
-	bool isInBoard(Point posPlayer);
-	bool canItMove(Point posPlayer, Point senseMovement);
+	bool checkMove(Point &posPlayer, Point senseMovement);
+	bool isInBoard(Point testPos);
+	bool canItMove(Point testPos, Point senseMovement);
 	bool moveBox(Point wishedDepl, Point senseMovement);
 	Cell findCell(Point pos);
+	bool checkTp(Point &posPlayer, Point &newPos);
 };
 
 #endif
