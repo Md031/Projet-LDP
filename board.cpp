@@ -93,10 +93,20 @@ void Board::keyPressed(int key)
 	playerPos = player->getPos();
 	Point senseMov{0,0};
 	movement(key, senseMov);
+	if (key == 't')  // si le joueur essaye de se tp
+	{
+		if (move->checkTp(playerPos))
+		{
+			player->movePlayer(playerPos);
+			currentStep++;
+		}
+		return;	
+	}
 	if (move->checkMove(playerPos, senseMov))  // check le move et dans playerPos on recup la nouvelle pos du player
 	{
 		player->movePlayer(playerPos);
 		currentStep++;
+		return;
 	}
 }
 

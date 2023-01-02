@@ -27,7 +27,7 @@ public:
 	bool canItMove(Point testPos, Point senseMovement);
 	bool moveBox(Point wishedDepl, Point senseMovement);
 	Cell findCell(Point pos);
-	bool checkTp(Point &posPlayer, Point &newPos);
+	bool checkTp(Point &posPlayer);
 };
 
 #endif

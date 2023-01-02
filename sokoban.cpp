@@ -60,7 +60,8 @@ public:
                     board->draw();
                 }
                 else if (Fl::event_key() == 'q') exit(0);  // pour fermer le jeu
-                else if (Fl::event_key() == FL_Up || Fl::event_key() == FL_Down || Fl::event_key() == FL_Right || Fl::event_key() == FL_Left)
+                else if (Fl::event_key() == FL_Up || Fl::event_key() == FL_Down || Fl::event_key() == FL_Right 
+                        || Fl::event_key() == FL_Left || Fl::event_key() == 't')  // le 't' c'est pour les téléportations
                 { 
                     board->keyPressed(Fl::event_key()); 
                 }          

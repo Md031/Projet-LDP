@@ -18,7 +18,6 @@ bool Move::checkMove(Point &posPlayer, Point senseMovement)
 	Point newPos = posPlayer + senseMovement;
 	if (!isInBoard(newPos)) return false;
 	if (!canItMove(newPos, senseMovement)) return false;
-	if (checkTp(posPlayer, newPos)) return true;  // si la case d'arrivé c'est une tp on tp le player
 	if (!(board->getCell(newPos)->getMoveInside())) return false;
 	if (board->getTargetCount() == 0) return false;
 	posPlayer = newPos;
@@ -80,21 +79,27 @@ bool Move::moveBox(Point wishedDepl, Point senseMovement)
 }
 
 
-bool Move::checkTp(Point &posPlayer, Point &newPos)
+bool Move::checkTp(Point &posPlayer)
 {
 	Point tpUn = tpVector.at(0)->getPos();
 	Point tpDeux = tpVector.at(1)->getPos();
-	if (newPos == tpUn)  // on check que sur la case de tp d'arrivé y a pas de box
-	{
-		posPlayer.x = tpDeux.x;
-		posPlayer.y = tpDeux.y;
-		return true;
+	if (posPlayer == tpUn)  
+	{	// on check que sur la case de tp d'arrivé y a pas de box
+		if (board->getCell(Point{tpDeux.y, tpDeux.x})->getMoveInside())  // problème de coordonée donc on inverse x et y là
+		{
+			posPlayer.x = tpDeux.x;
+			posPlayer.y = tpDeux.y;
+			return true;
+		}
 	}
-	else if (newPos == tpDeux)
+	else if (posPlayer == tpDeux)
 	{
-		posPlayer.x = tpUn.x;
-		posPlayer.y = tpUn.y;
-		return true;
+		if (board->getCell(Point{tpUn.y, tpUn.x})->getMoveInside())
+		{
+			posPlayer.x = tpUn.x;
+			posPlayer.y = tpUn.y;
+			return true;
+		}
 	}
 	return false;
 }
