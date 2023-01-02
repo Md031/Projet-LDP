@@ -55,6 +55,7 @@ public:
 	vector<Teleportation*> getTpVector();
 	void simulationMove(Point& simulate, int key);
 	void movement(int key, Point& senseMovement);  // permet de déterminer le sens du mouvement
+	void resetBestScore();
 };
 
 

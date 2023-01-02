@@ -192,3 +192,17 @@ int Board::getTargetCount() { return targetCount; }
 
 
 vector<Teleportation*> Board::getTpVector() { return tpVector; }
+
+
+void Board::resetBestScore()
+{
+	fstream writingFile;
+	writingFile.open(levelFile, ios::out);
+	writingFile << to_string(maxStep) << endl;
+	writingFile << '0' << endl;
+	for (auto &c : levelContent)
+	{
+		writingFile << c << endl;
+	}
+	writingFile.close();
+}

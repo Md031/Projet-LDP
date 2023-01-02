@@ -72,7 +72,14 @@ public:
                         || Fl::event_key() == FL_Left || Fl::event_key() == 't')  // le 't' c'est pour les téléportations
                 { 
                     board->keyPressed(Fl::event_key()); 
-                }          
+                }
+                else if (Fl::event_key() == 'r')
+                {
+                    board->resetBestScore();
+                    delete board; board = nullptr;
+                    board = new Board{currentLevel};
+                    board->draw();
+                }      
         }
         return 0;
     }
