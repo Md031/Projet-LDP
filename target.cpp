@@ -17,6 +17,10 @@ void Target::draw()
 
 void Target::reverseFullness()
 {
+	/**
+	 * Fonction qui cache la target si il y a une box
+	 * sur elle et la décache si il n'y a plus de box sur elle
+	 */
 	if (isFull) isFull = false;
 	else isFull = true;
 

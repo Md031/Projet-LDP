@@ -80,29 +80,17 @@ void Cell::draw()
 }
 
 
-Point Cell::getPos() const
-{
-	return pos;
-}
+Point Cell::getPos() const { return pos; }
 
 
 
-bool Cell::getMoveInside() const
-{
-	return canMoveInside;
-}
+bool Cell::getMoveInside() const { return canMoveInside; }
 
 
-bool Cell::getIsTarget() const
-{
-	return isATarget;
-}
+bool Cell::getIsTarget() const { return isATarget; }
 
 
-bool Cell::getCanBeMoved() const
-{
-	return canBeMoved;
-}
+bool Cell::getCanBeMoved() const { return canBeMoved; }
 
 
 Cell &Cell::operator=(const Cell &other)

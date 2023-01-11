@@ -37,7 +37,7 @@ private:
 	int bestScore = 0;
 	string printFinal = "You win";
 public:
-	Board(string levelFile);
+	Board(string levelFile = "Levels/Level 0.txt");
 	~Board();
 	
 	void keyPressed(int key);

@@ -12,7 +12,7 @@ struct Point
 {
 	int x, y;
 	bool  comparePoint(Point otherPoint);
-	Point &operator+=(const Point &other);
+	Point &operator+=(const Point &other);  // surcharge de certains opérateurs
 	Point &operator-=(const Point &other);
 	Point &operator+(const Point &other);
 	Point &operator=(const Point &other);

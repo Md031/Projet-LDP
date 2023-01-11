@@ -19,6 +19,9 @@ void Player::setY(int &newY) { currentPos.y = newY; }
 
 void Player::movePlayer(Point &newPos) 
 { 
+	/**
+	 * Fonction qui déplace le personne sur une nouvelle case
+	 */
 	setX(newPos.x);
 	setY(newPos.y);
 }

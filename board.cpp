@@ -10,6 +10,9 @@ Board::Board(const string levelFile) : levelFile{levelFile}
 
 void Board::createMatrix()
 {
+	/**
+	 * Fonction qui crée la matrice associé à un fichier texte
+	 */
 	fstream readFile;
 	string fileContent;
 	readFile.open(levelFile, ios::in);
@@ -20,7 +23,7 @@ void Board::createMatrix()
 	string maxStepCount;  // on récupère le nbr de pas max du niveau
 	getline(readFile, maxStepCount);
 	maxStep = stoi(maxStepCount);
-
+	cout << levelFile << endl;
 	string bestScore_s;
 	getline(readFile, bestScore_s);
 	bestScore = stoi(bestScore_s);
@@ -114,6 +117,9 @@ Board::~Board()
 
 void Board::keyPressed(int key)
 {
+	/**
+	 * Fonction qui gére les input des flèches du clavier et du 't' pour se téléporter
+	 */
 	playerPos = player->getPos();
 	Point senseMov{0,0};
 	movement(key, senseMov);
@@ -135,11 +141,11 @@ void Board::keyPressed(int key)
 }
 
 
-bool Board::checkWin() { return targetCount == 0; }
-
-
 void Board::printStepInfo()
 {
+	/**
+	 * Fonction qui affiche toutes les informations liées aux pas
+	 */
 	string printStep = "Your current step : " + to_string(currentStep);
 	string printMaxStep = "";
 	string BestScoreLvl = "The best score for this level is : " + to_string(bestScore);
@@ -173,6 +179,9 @@ void Board::movement(int key, Point& senseMovement)
 }
 
 
+bool Board::checkWin() { return targetCount == 0; }
+
+
 string Board::getLvlFile() { return levelFile; }
 
 
@@ -196,13 +205,13 @@ vector<Teleportation*> Board::getTpVector() { return tpVector; }
 
 void Board::resetBestScore()
 {
+	/**
+	 * Fonction qui permet de reset le best score d'un niveau quand on appuie sur "r" 
+	 */
 	fstream writingFile;
 	writingFile.open(levelFile, ios::out);
 	writingFile << to_string(maxStep) << endl;
 	writingFile << '0' << endl;
-	for (auto &c : levelContent)
-	{
-		writingFile << c << endl;
-	}
+	for (auto &c : levelContent) writingFile << c << endl;
 	writingFile.close();
 }

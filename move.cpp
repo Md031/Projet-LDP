@@ -15,6 +15,10 @@ Move::Move() {}
 
 bool Move::checkMove(Point &posPlayer, Point senseMovement)
 {
+	/**
+	 * Fonction qui fais toutes les vérifications pour savoir si un mouvement est possible, si tous
+	 * les tests passent c'est que le mouvement l'est
+	 */
 	Point newPos = posPlayer + senseMovement;
 	if (!isInBoard(newPos)) return false;
 	if (!canItMove(newPos, senseMovement)) return false;
@@ -27,7 +31,9 @@ bool Move::checkMove(Point &posPlayer, Point senseMovement)
 
 bool Move::isInBoard(Point testPos)
 {
-	// si il est inférieur à 0 ou supérieur à la taille du vecteur on n'autorise pas le déplacement car il n'est pas dans le board
+	/**
+	 * Fonction qui vérifie si le mouvement du joueur ne dépasse pas les limites du board
+	 */
 	if (testPos.x < 0) return false;
 	if (testPos.y < 0) return false;
 	if (testPos.x >= board->getSize().x) return false;
@@ -37,7 +43,10 @@ bool Move::isInBoard(Point testPos)
 
 
 bool Move::canItMove(Point testPos, Point senseMovement)  // si le déplacement de la box est possible on doit changer box avec la cell où elle atterit
-{
+{	
+	/**
+	 * Fonction qui vérifie si la celle où on arrive CanBeMoved, c'est à dire si on arrive sur une box
+	 */
 	if (!board->getCell(testPos)->getCanBeMoved()) return true;  // si on peut bouger et que c'est pas une box où on atterit
 	return moveBox(testPos, senseMovement);  // si on passe le if c'est qu'on arrive sur une box
 }
@@ -45,6 +54,10 @@ bool Move::canItMove(Point testPos, Point senseMovement)  // si le déplacement 
 
 bool Move::moveBox(Point wishedDepl, Point senseMovement)
 {
+	/**
+	 * Fonction qui simule un déplacement en plus dans le même sens si on pousse une box
+	 * et qui vérifie si la case derrière la box est une case accessible.
+	 */
 	wishedDepl += senseMovement;	// on verifie la case derrière la box qu'on veut bouger
 	if (isInBoard(wishedDepl) && board->getCell(wishedDepl)->getMoveInside())
 	{
